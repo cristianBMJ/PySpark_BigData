@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pyspark-big-data-project"
+version = "0.1.0"
+description = "A project to process large datasets using PySpark"
+authors = ["CristianBMJ <cpmartnez@ug.uchile.cl>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+pyspark = "^3.5.3"
+pandas = "^2.2.3"
+numpy = "^2.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
