@@ -1,0 +1,17 @@
+# Virtual environment
+.venv/
+
+# Poetry lock file (optional)
+poetry.lock
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local configuration files
+.env
