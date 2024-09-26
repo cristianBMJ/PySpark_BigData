@@ -1,22 +1,38 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
+from datetime import datetime, timedelta
+
+today = datetime.now().date()
+tomorrow = today + timedelta(days=1)
+
+
 
 # Initialize Spark Session
 spark = SparkSession.builder \
     .appName("Big Data Processing") \
     .getOrCreate()
 
-# Load dataset (assuming CSV for example)
-df = spark.read.csv("data/large_dataset.csv", header=True, inferSchema=True)
+import yfinance as yf
 
+# Download stock market data for a specific company (e.g., Apple)
+data = yf.download("META", start="2023-09-01", end=tomorrow)
+data.to_csv('data/finance_stock_data_META.csv')
+
+# Load dataset (assuming CSV for example)
+df = spark.read.csv("data/finance_stock_data_META.csv", header=True, inferSchema=True)
+
+print( df.columns, "\n")
+
+df.show()
 # Perform transformations
-filtered_df = df.filter(col("some_column") > 1000)
+filtered_df = df.filter(col("Volume") > 10)
 
 # Aggregation example
-agg_df = filtered_df.groupBy("category").agg({"value_column": "sum"})
+agg_df = filtered_df.groupBy("Date").agg({"Volume": "sum"})
 
+agg_df.show(5)
 # Save results to local storage
 agg_df.write.csv("data/processed_output.csv")
-
+print(today)
 # Stop the Spark session
 spark.stop()
