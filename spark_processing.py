@@ -23,16 +23,17 @@ df = spark.read.csv("data/finance_stock_data_META.csv", header=True, inferSchema
 
 print( df.columns, "\n")
 
-df.show()
+df.orderBy(df['Date'].desc()).show(5)
 # Perform transformations
 filtered_df = df.filter(col("Volume") > 10)
 
 # Aggregation example
 agg_df = filtered_df.groupBy("Date").agg({"Volume": "sum"})
 
-agg_df.show(5)
+agg_df.orderBy(agg_df['Date'].desc()).show(5)
+
 # Save results to local storage
-agg_df.write.csv("data/processed_output.csv")
+agg_df.write.csv("data/processed_output_1.csv")
 print(today)
 # Stop the Spark session
 spark.stop()
