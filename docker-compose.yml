@@ -25,7 +25,10 @@ services:
       - ./data:/app/data
 
   airflow:
-    image: puckel/docker-airflow
+#    image: apache/airflow
+    build:
+      context: .
+      dockerfile: Dockerfile  # Assuming you have a Dockerfile
     container_name: airflow
     depends_on:
       - spark
@@ -36,14 +39,19 @@ services:
       - LOAD_EX=y
       - EXECUTOR=Local
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      - FERNET_KEY=kxQJJuFjsfTcmvSHnfbjkqB94qU7NsjVx8rOpB5F8Fo=
+#      - PYTHONPATH=/app:/usr/local/lib/python3.7/site-packages:$PYTHONPATH  # Set PYTHONPATH
+
+#      - PYTHONPATH=/app:$PYTHONPATH
 
     volumes:
-      - ./airflow/dags:/usr/local/airflow/dags
+      - ./airflow/dags:/app/airflow/dags
       - ./scripts:/app/scripts
       - ./data:/app/data
       - ./config/airflow.cfg:/opt/bitnami/airflow/airflow.cfg
+    command: ["airflow", "webserver"]  # Correct command format
+    #command: ["airflow", "scheduler"]
 
-    command: webserver
 
 volumes:
   postgres_data:
