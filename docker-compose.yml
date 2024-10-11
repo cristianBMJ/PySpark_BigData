@@ -12,7 +12,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
+    healthcheck: # check functioning c
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
       retries: 5
@@ -52,7 +52,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__CORE__FERNET_KEY=kxQJJuFjsfTcmvSHnfbjkqB94qU7NsjVx8rOpB5F8Fo=
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
     volumes:
       - ./airflow/dags:/app/airflow/dags
       - ./scripts:/app/scripts
@@ -72,7 +72,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__CORE__FERNET_KEY=kxQJJuFjsfTcmvSHnfbjkqB94qU7NsjVx8rOpB5F8Fo=
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
     volumes:
       - ./airflow/dags:/app/airflow/dags
       - ./scripts:/app/scripts
