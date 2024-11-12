@@ -1,3 +1,5 @@
+# /home/cris/workaplace/Big_data_pyspark/airflow/dags
+# V7
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
@@ -6,7 +8,7 @@ from scripts.process_data import process_data
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2023, 1, 1),
+    'start_date': datetime(2024, 1, 2 ),
     'retries': 1
 }
 

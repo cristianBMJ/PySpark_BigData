@@ -1,14 +1,15 @@
-# Use a lightweight Python base image
-FROM python:3.11-slim
+# Use a full Python base image
+FROM python:3.11
 
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies required for Poetry
+# Install system dependencies required for Poetry and Spark
 RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     gcc \
+    openjdk-17-jdk \
     && apt-get clean
 
 # Install Poetry
@@ -22,6 +23,14 @@ COPY pyproject.toml poetry.lock* ./
 RUN poetry config virtualenvs.create false && \
     poetry install --no-dev
 
+# Install Spark
+RUN curl -sSL https://archive.apache.org/dist/spark/spark-3.4.0/spark-3.4.0-bin-hadoop3.tgz | tar -xz -C /opt/ && \
+    ln -s /opt/spark-3.4.0-bin-hadoop3 /opt/spark
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64  
+ENV PATH="$JAVA_HOME/bin:$PATH:/opt/spark/bin"
+
 # Copy the rest of the application code
 COPY . .
 
@@ -32,4 +41,3 @@ ENV AIRFLOW_HOME=/app/airflow
 EXPOSE 8080
 
 # We'll set the command in docker-compose.yml
-
