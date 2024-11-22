@@ -1,5 +1,5 @@
 # /home/cris/workaplace/Big_data_pyspark/airflow/dags
-# V7
+# V10
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime

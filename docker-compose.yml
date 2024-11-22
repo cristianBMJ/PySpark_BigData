@@ -33,9 +33,11 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
       - AIRFLOW__WEBSERVER__SECRET_KEY=${AIRFLOW_SECRET_KEY}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/config/commodities-with-looker-ebea952a6145.json
 
     volumes:
       - ./config/airflow.cfg:/app/airflow/airflow.cfg:ro
+      - ./config/service-account-key.json:/app/config/service-account-key.json:ro
     command: >
       bash -c "
         airflow db init &&
@@ -59,12 +61,14 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
       - AIRFLOW__WEBSERVER__SECRET_KEY=${AIRFLOW_SECRET_KEY}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/config/commodities-with-looker-ebea952a6145.json
 
     volumes:
       - ./airflow/dags:/app/airflow/dags
       - ./scripts:/app/scripts
       - ./data:/app/data
       - ./config/airflow.cfg:/app/airflow/airflow.cfg:ro
+      - ./config/service-account-key.json:/app/config/service-account-key.json:ro
     command: airflow webserver
 
   airflow-scheduler:
@@ -82,11 +86,14 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
       - AIRFLOW__WEBSERVER__SECRET_KEY=${AIRFLOW_SECRET_KEY}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/config/commodities-with-looker-ebea952a6145.json
+
     volumes:
       - ./airflow/dags:/app/airflow/dags
       - ./scripts:/app/scripts
       - ./data:/app/data
       - ./config/airflow.cfg:/app/airflow/airflow.cfg:ro
+      - ./config/service-account-key.json:/app/config/service-account-key.json:ro
     command: airflow scheduler
 
   spark:
